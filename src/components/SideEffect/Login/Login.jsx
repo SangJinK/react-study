@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Login.module.css';
 import Card from '../../UI/Card';
 import Button from '../../UI/Button/Button';
@@ -16,20 +16,26 @@ const Login = ({ onLogin }) => {
   // 이메일, 패스워드가 둘 다 동시에 정상적인 상태인지 확인
   const [formIsValid, setFormIsValid] = useState(false);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log('gd');
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6,
+      );
+    }, 1000);
+
+    return () => {
+      console.log('clean up!');
+      clearTimeout(timer);
+    };
+  }, [enteredEmail, enteredPassword]);
+
   const emailChangeHandler = (e) => {
     setEnteredEmail(e.target.value);
-
-    setFormIsValid(
-      e.target.value.includes('@') && enteredPassword.trim().length > 6,
-    );
   };
 
   const passwordChangeHandler = (e) => {
     setEnteredPassword(e.target.value);
-
-    setFormIsValid(
-      e.target.value.trim().length > 6 && enteredEmail.includes('@'),
-    );
   };
 
   const validateEmailHandler = () => {
