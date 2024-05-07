@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from '../UI/Button/Button';
 import styles from './AddUsers.module.css';
 import Card from '../UI/Card';
@@ -9,7 +9,8 @@ const AddUsers = () => {
     userName: '',
     age: '',
   });
-
+  const nameInput = useRef();
+  const ageInput = useRef();
   const [error, setError] = useState(null);
 
   const userNameChangeHandler = (e) => {
@@ -32,8 +33,10 @@ const AddUsers = () => {
 
   const userSubmitHandler = (e) => {
     e.preventDefault();
+    const username = nameInput.current.value;
+    const age = ageInput.current.value;
 
-    if (userValue.userName.trim() === '' || userValue.age.trim() === '') {
+    if (username.userName.trim() === '' || age.trim() === '') {
       setError({
         title: '입력값이 잘못되었습니다.',
         message: '이름과 나이를 모두 입력해주세요.',
@@ -41,20 +44,14 @@ const AddUsers = () => {
       return;
     }
 
-    if (+userValue.age < 1) {
+    if (+age < 1) {
       setError({
         title: '입력값이 잘못되었습니다.',
         message: '나이는 1 이상의 숫자를 입력해주세요.',
       });
-      return;
     }
-
-    console.log(userValue);
-
-    setUserValue({
-      userName: '',
-      age: '',
-    });
+    nameInput.current.value = '';
+    ageInput.current.value = '';
   };
 
   return (
@@ -69,19 +66,9 @@ const AddUsers = () => {
       <Card className={styles.input}>
         <form onSubmit={userSubmitHandler}>
           <label htmlFor="username">이름</label>
-          <input
-            id="username"
-            type="text"
-            onChange={userNameChangeHandler}
-            value={userValue.userName}
-          />
+          <input id="username" type="text" ref={nameInput} />
           <label htmlFor="age">나이</label>
-          <input
-            id="age"
-            type="number"
-            onChange={ageChangeHandler}
-            value={userValue.age}
-          />
+          <input id="age" type="number" ref={ageInput} />
           <Button type="submit">가입하기</Button>
         </form>
       </Card>
