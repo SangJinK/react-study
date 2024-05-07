@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 import styles from './Login.module.css';
 import Card from '../../UI/Card';
 import Button from '../../UI/Button/Button';
+import AuthContext from '../../store/auth-context';
+import Input from '../../UI/Input/Input';
 /*
   이 컴포넌트에서 사용하는 모든 상태와 상태 변경을 중앙 제어하는 함수.
   컴포넌트 내부 데이터를 사용하지 않고 상태에만 집중하기 때문에
@@ -41,7 +43,8 @@ const passwordReducer = (state, action) => {
   }
 };
 
-const Login = ({ onLogin }) => {
+const Login = () => {
+  const { onLogin } = useContext(AuthContext);
   /*
     param1 - reducer function: 위에서 만든 리듀서 함수
     param2 - initial state: 초기 상태값
@@ -114,9 +117,10 @@ const Login = ({ onLogin }) => {
           className={`${styles.control} ${!emailIsValid ? styles.invalid : ''}`}
         >
           <label htmlFor="email">E-Mail</label>
-          <input
+          <Input
             type="email"
             id="email"
+            label="E-mail"
             value={emailState.value}
             onChange={emailChangeHandler}
             onBlur={validateEmailHandler}
@@ -126,9 +130,10 @@ const Login = ({ onLogin }) => {
           className={`${styles.control} ${!pwIsValid ? styles.invalid : ''}`}
         >
           <label htmlFor="password">Password</label>
-          <input
+          <Input
             type="password"
             id="password"
+            label="Password"
             value={pwState.value}
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
