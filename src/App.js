@@ -1,20 +1,25 @@
 import './App.css';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState } from 'react';
 
-import MainHeader from './components/SideEffect/MainHeader/MainHeader';
-import Login from './components/SideEffect/Login/Login';
-import Home from './components/SideEffect/Home/Home';
-import AuthContext from './components/store/auth-context';
+import Header from './components/Food/Layout/Header';
+import Meals from './components/Food/Meals/Meals';
+import CartProvider from './components/store/CartProvider';
+import Cart from './components/Food/Cart/Cart';
 
 const App = () => {
-  const { isLoggedIn, onLogin } = useContext(AuthContext);
+  const [cartIsShown, setCartIsShown] = useState(false);
+
+  const showCartHandler = () => setCartIsShown(true);
+  const hideCartHandler = () => setCartIsShown(false);
   return (
     <>
-      <MainHeader />
-      <main>
-        {isLoggedIn && <Home />}
-        {!isLoggedIn && <Login />}
-      </main>
+      <CartProvider>
+        {cartIsShown && <Cart onClose={hideCartHandler} />}
+        <Header onShowCart={showCartHandler} />
+        <div id="main">
+          <Meals />
+        </div>
+      </CartProvider>
     </>
   );
 };
