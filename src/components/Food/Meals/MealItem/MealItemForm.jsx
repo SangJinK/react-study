@@ -3,7 +3,7 @@ import styles from './MealItemForm.module.scss';
 import Input from '../../../UI/Input/Input';
 
 const MealItemForm = ({ id, onAddToCart }) => {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
   const amountHandler = (amt) => {
     setAmount(amt);
   };

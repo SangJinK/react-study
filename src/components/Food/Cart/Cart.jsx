@@ -1,20 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './Cart.module.scss';
 import CartModal from '../../UI/Modal/CartModal';
-const DUMMY_CART = [
-  {
-    id: 'c1',
-    name: '스시',
-    amount: 2,
-    price: 46000,
-  },
-  {
-    id: 'c2',
-    name: '띠드버거',
-    amount: 1,
-    price: 12000,
-  },
-];
+import CartContext from '../../store/cart-context';
+import CartItem from './CartItem';
+
 const Cart = ({ onClose }) => {
   const {
     'cart-items': cartItemStyle,
@@ -24,20 +13,17 @@ const Cart = ({ onClose }) => {
     button,
   } = styles;
 
+  const { items, totalPrice } = useContext(CartContext);
   return (
     <CartModal onClose={onClose}>
       <ul className={cartItemStyle}>
-        {DUMMY_CART.map((cartItem) => (
-          <li key={cartItem.id}>{cartItem.name}</li>
+        {items.map((cartItem) => (
+          <CartItem key={cartItem.id} cart={cartItem} />
         ))}
       </ul>
       <div className={total}>
         <span>주문 총액</span>
-        <span>
-          {DUMMY_CART.reduce((acc, cur) => {
-            return acc + cur.price * cur.amount;
-          }, 0)}
-        </span>
+        <span>{new Intl.NumberFormat('ko-KR').format(totalPrice)}</span>
       </div>
       <div className={actions}>
         <button className={btnAlt} onClick={onClose}>
