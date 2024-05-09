@@ -4,11 +4,14 @@ import Input from '../../../UI/Input/Input';
 
 const MealItemForm = ({ id, onAddToCart }) => {
   const [amount, setAmount] = useState(1);
+  const [value, setValue] = useState('1');
   const amountHandler = (amt) => {
+    setValue(amt);
     setAmount(amt);
   };
   const formSubmitHandler = (e) => {
     e.preventDefault();
+    setValue(1);
     onAddToCart(amount);
   };
 
@@ -23,7 +26,8 @@ const MealItemForm = ({ id, onAddToCart }) => {
           min: '1',
           max: '5',
           step: '1',
-          defaultValue: '1',
+
+          value,
         }}
       />
       <button>담기</button>
